@@ -10,6 +10,7 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from app.forms import LoginForm
 from app.models import UserProfile
+from werkzeug.security import check_password_hash
 
 
 ###
@@ -46,7 +47,7 @@ def login():
             user = UserProfile.query.filter_by(username=username).first()
             # get user id, load into session
            
-            if user.password == password:
+            if check_password_hash(user.password, password):
                 # get user id, load into session
                 login_user(user)
 
